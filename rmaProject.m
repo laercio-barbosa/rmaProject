@@ -46,7 +46,7 @@ function rmaProject()
         disp('Connected to remote API server');
         
         % Now send some data to V-REP in a non-blocking fashion:
-        vrep.simxAddStatusbarMessage(clientID,'Hello V-REP!',vrep.simx_opmode_oneshot);
+        vrep.simxAddStatusbarMessage(clientID,'Matlab remote client connected to V-REP!',vrep.simx_opmode_oneshot);
         
         % Motors initialization
         [erro, leftMotorHandle] = vrep.simxGetObjectHandle(clientID,'Pioneer_p3dx_leftMotor',vrep.simx_opmode_oneshot_wait);
@@ -76,12 +76,12 @@ function rmaProject()
             end
         end
 
-        % Robot speed and deviation. Runs until simulation has finished!
+        % Robot speed and deviation calculation. Runs until simulation has finished!
         while (vrep.simxGetConnectionId(clientID) ~= -1)
             for i = 1:16
                 [erro, state, coord, ~, ~] = vrep.simxReadProximitySensor(clientID, sensorHandle(i),vrep.simx_opmode_buffer);
                 if (erro == vrep.simx_return_ok)
-                    dist = coord(3);
+                    dist = sqrt(power(coord(1),2) + power(coord(2),2) + power(coord(3),2));
                     if (state == true && dist < noDetectionDist)
                         if (dist < maxDetectionDist)
                             dist = maxDetectionDist;
