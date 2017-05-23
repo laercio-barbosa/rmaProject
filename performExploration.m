@@ -3,7 +3,7 @@ function [vLeft, vRight] = performExploration(clientID, vrep, sensorHandle)
 %   Detailed explanation goes here
 
     % Scene and pioneer motion variables
-    noDetectionDist  = 1.0;  % No  detection distance
+    noDetectionDist  = 5.0;  % No  detection distance
     maxDetectionDist = 0.05; % Max detection distance
     detect = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
     braitenbergL = [-0.2,-0.4,-0.6,-0.8,-1,-1.2,-1.4,-1.6, 0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0];
