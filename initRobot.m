@@ -28,22 +28,17 @@
 % WHILE USING OR MISUSING THIS SOFTWARE.
 % -------------------------------------------------------------------
 
-function [erro, leftMotorHandle, rightMotorHandle] = initMotors(clientID, vrep, leftMotorDescr, rightMotorDescr)
-%INITMOTORS Motors initialization
-%   Connects to V-REP remote server and gets motors handles
+function [erro, robotHandle] = initRobot(clientID, vrep, robotDescr)
+%INITROBOT Robot initialization
+%   Connects to V-REP remote server and gets robot handle
 
-    [erro, leftMotorHandle] = vrep.simxGetObjectHandle(clientID, leftMotorDescr, vrep.simx_opmode_oneshot_wait);
+    [erro, robotHandle] = vrep.simxGetObjectHandle(clientID, robotDescr, vrep.simx_opmode_oneshot_wait);
     if (vrep.simx_return_ok == erro)
-        disp('Connected to left motor!');
-        
-        [erro, rightMotorHandle] = vrep.simxGetObjectHandle(clientID, rightMotorDescr, vrep.simx_opmode_oneshot_wait);
-        if (vrep.simx_return_ok == erro)
-            disp('Connected to right motor!');
-        else
-            disp('Handle for right motor not found!');
-        end
+        disp('Connected to robot!');
+        % We start streaming data, but ignore function outputs as
+        % is the first call - see function help
+        [~, ~] = vrep.simxGetObjectPosition(clientID, robotHandle, -1, vrep.simx_opmode_streaming);
+        [~, ~] = vrep.simxGetObjectOrientation(clientID, robotHandle, -1, vrep.simx_opmode_streaming);
     else
-        disp('Handle for left motor not found!');
+        disp('Handle for the robot not found!');
     end
-end
-

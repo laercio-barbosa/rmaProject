@@ -28,22 +28,13 @@
 % WHILE USING OR MISUSING THIS SOFTWARE.
 % -------------------------------------------------------------------
 
-function [erro, leftMotorHandle, rightMotorHandle] = initMotors(clientID, vrep, leftMotorDescr, rightMotorDescr)
-%INITMOTORS Motors initialization
-%   Connects to V-REP remote server and gets motors handles
-
-    [erro, leftMotorHandle] = vrep.simxGetObjectHandle(clientID, leftMotorDescr, vrep.simx_opmode_oneshot_wait);
-    if (vrep.simx_return_ok == erro)
-        disp('Connected to left motor!');
-        
-        [erro, rightMotorHandle] = vrep.simxGetObjectHandle(clientID, rightMotorDescr, vrep.simx_opmode_oneshot_wait);
-        if (vrep.simx_return_ok == erro)
-            disp('Connected to right motor!');
-        else
-            disp('Handle for right motor not found!');
-        end
-    else
-        disp('Handle for left motor not found!');
-    end
+function [robotPos] = getRobotPos(vrep, clientID, robotHandle)
+%GETROBOTPOS Gets the current robot position and orientation
+%   Gets the current robot position and orientation x y a [m m rad]
+    [~, robotXYZ] = vrep.simxGetObjectPosition(clientID, robotHandle, -1, vrep.simx_opmode_buffer);
+    [~, robotAng] = vrep.simxGetObjectOrientation(clientID, robotHandle, -1, vrep.simx_opmode_buffer);
+    robotPos = robotXYZ(1:2);
+    robotPos = [robotPos robotAng(3)];
+    robotPos = robotPos'; % [x y a]' [m m rad]
 end
 

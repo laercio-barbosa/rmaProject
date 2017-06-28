@@ -28,22 +28,18 @@
 % WHILE USING OR MISUSING THIS SOFTWARE.
 % -------------------------------------------------------------------
 
-function [erro, leftMotorHandle, rightMotorHandle] = initMotors(clientID, vrep, leftMotorDescr, rightMotorDescr)
-%INITMOTORS Motors initialization
-%   Connects to V-REP remote server and gets motors handles
-
-    [erro, leftMotorHandle] = vrep.simxGetObjectHandle(clientID, leftMotorDescr, vrep.simx_opmode_oneshot_wait);
-    if (vrep.simx_return_ok == erro)
-        disp('Connected to left motor!');
-        
-        [erro, rightMotorHandle] = vrep.simxGetObjectHandle(clientID, rightMotorDescr, vrep.simx_opmode_oneshot_wait);
-        if (vrep.simx_return_ok == erro)
-            disp('Connected to right motor!');
-        else
-            disp('Handle for right motor not found!');
-        end
+function [erro, data] = getLidarData(clientID, vrep)
+%GETLIDARDATA Get data from LIDAR sensor
+%   Gets a vector with the LIDAR data in format [x1 y1 z1 x2 y2 z2 ... xn yn zn] 
+%   and convert it to polar form.
+    [erro,signal] = vrep.simxGetStringSignal(clientID,'lidarData',vrep.simx_opmode_buffer);
+    if(vrep.simx_return_ok == erro)
+        dataVec = double(vrep.simxUnpackFloats(signal));
+        dataMatrix = reshape(dataVec, 3, []);
+        [theta, dist] = cart2pol(dataMatrix(1,:,:), dataMatrix(2,:,:));
+        data = [dist; theta];
     else
-        disp('Handle for left motor not found!');
+        data = [];
     end
 end
 

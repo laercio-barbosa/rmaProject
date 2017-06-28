@@ -28,22 +28,31 @@
 % WHILE USING OR MISUSING THIS SOFTWARE.
 % -------------------------------------------------------------------
 
-function [erro, leftMotorHandle, rightMotorHandle] = initMotors(clientID, vrep, leftMotorDescr, rightMotorDescr)
-%INITMOTORS Motors initialization
-%   Connects to V-REP remote server and gets motors handles
+function printExplorationInfo(clientID, vrep, dist, h, k, vLeft, vRight)
+%PRINTEXPLORATIONINFO Summary of this function goes here
+%   Detailed explanation goes here
+    persistent startTime;
+    info_update_tick = 1.0;
 
-    [erro, leftMotorHandle] = vrep.simxGetObjectHandle(clientID, leftMotorDescr, vrep.simx_opmode_oneshot_wait);
-    if (vrep.simx_return_ok == erro)
-        disp('Connected to left motor!');
-        
-        [erro, rightMotorHandle] = vrep.simxGetObjectHandle(clientID, rightMotorDescr, vrep.simx_opmode_oneshot_wait);
-        if (vrep.simx_return_ok == erro)
-            disp('Connected to right motor!');
-        else
-            disp('Handle for right motor not found!');
-        end
-    else
-        disp('Handle for left motor not found!');
+    if (isempty(startTime))
+        startTime = tic;
+    end
+
+    % Print some info/results and plot a graph
+    elapsedTime = toc(startTime);            
+    if (elapsedTime >= info_update_tick)
+        startTime = tic;
+
+        % Prepare the info message
+        str = sprintf(['%s  -->  vLeft = %0.10f  |  vRight = %0.10f  |  ', ...
+                      'dist = %0.10f  |  h = %0.10f  |  (dist - h) = %0.10f  |  k =  %0.10f'], ...
+                      datestr(datetime('now')), vLeft, vRight, dist, h, dist - h, k);
+
+        % Print info messages on Matlab console
+        fprintf('%s\n', str);
+
+        % Print info messages on V-REP console
+        vrep.simxAddStatusbarMessage(clientID, str, vrep.simx_opmode_oneshot);
     end
 end
 

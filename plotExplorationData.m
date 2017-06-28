@@ -28,22 +28,37 @@
 % WHILE USING OR MISUSING THIS SOFTWARE.
 % -------------------------------------------------------------------
 
-function [erro, leftMotorHandle, rightMotorHandle] = initMotors(clientID, vrep, leftMotorDescr, rightMotorDescr)
-%INITMOTORS Motors initialization
-%   Connects to V-REP remote server and gets motors handles
+function [ output_args ] = plotExplorationData(clientID, vrep, dist, h)
+%PLOTEXPLORATIONDATA Summary of this function goes here
+%   Detailed explanation goes here
+    persistent startTime;
+    persistent x_axis;
+    info_update_tick = 1.0;
 
-    [erro, leftMotorHandle] = vrep.simxGetObjectHandle(clientID, leftMotorDescr, vrep.simx_opmode_oneshot_wait);
-    if (vrep.simx_return_ok == erro)
-        disp('Connected to left motor!');
-        
-        [erro, rightMotorHandle] = vrep.simxGetObjectHandle(clientID, rightMotorDescr, vrep.simx_opmode_oneshot_wait);
-        if (vrep.simx_return_ok == erro)
-            disp('Connected to right motor!');
-        else
-            disp('Handle for right motor not found!');
-        end
-    else
-        disp('Handle for left motor not found!');
+    if (isempty(startTime))
+        % Setup the graphic only once
+        figure(1);
+        title('Asymptotic distance stability');
+        ylabel('Distance [m]');
+        xlabel('Time [s]');
+        ylim([-0.2, 0.5]);
+        xlim([0, 240]);
+        x_axis = 0;
+        startTime = tic;
+    end
+
+    % Print some info/results and plot a graph
+    elapsedTime = toc(startTime);            
+    if (elapsedTime >= info_update_tick)
+        startTime = tic;
+
+        % Update de graphic
+        x_axis = x_axis + info_update_tick;
+        hold on;
+        plot(x_axis, dist, 'b.', 'DisplayName', 'y = dist');
+        plot(x_axis, dist-h, 'r.', 'DisplayName', 'y = dist - h');
+        legend('show');
+        hold off;
     end
 end
 
