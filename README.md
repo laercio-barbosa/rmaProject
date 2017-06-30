@@ -11,6 +11,19 @@
 
 
 
+### Features
+- Odometry from real position/orientation of the robot in V-REP;
+- As V-REP sensor readins don't provide noise, it is added in the Matlab code;
+- Exploration and obstacle avoidance done with sonar sensors.
+
+
+
+### Roadmap
+- [ ] Do odometry by simulate encoder signal in V-REP;
+- [ ] Improve the performance of grid map printing;
+- [ ] Do exploration and obstacle avoidance using Lidar.
+
+
 ### How to use Map Viewer GUI
 1. In Matlab file explorer go to rmaProject folder (You should clone or download this project);
 2. Open the file `slamViewerGUI.m`;
