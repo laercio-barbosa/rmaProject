@@ -15,7 +15,7 @@
 1. In Matlab file explorer go to rmaProject folder (You should clone or download this project);
 2. Open the file `slamViewerGUI.m`;
 3. In Matlab EDITOR tab click in RUN button. The application will start;
-4. Open the file *rmaProject.ttt* in V-REP and start the simulation;
+4. Open the file `rmaProject.ttt` in V-REP and start the simulation;
 5. In Map Viewer GUI click on RUN SLAM button
 
 
@@ -30,7 +30,7 @@
 > Older versions can broke some objects!
 
 - Matlab 2016b
-> It is possible to use Matlab 2014b. Tou just need to change line 44 in file `printSpdDistInfo.m` to `algstr = algorithm;`
+> It is possible to use Matlab 2014b. You just need to change line 44 in file `printSpdDistInfo.m` to `algstr = algorithm;`
 
 
 
