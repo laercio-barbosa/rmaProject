@@ -47,11 +47,11 @@ classdef Sensor < handle
             % Default values based on Hokuyo URG-04LX-UG01 datasheet 
             % (website info is different and probably wrong!)
             % The number 684 is the number of points from V-REP sensor.
-            sen.range       =   4.0;
-            sen.range_min   =   0.02;
+            sen.range       =   4.095;
+            sen.range_min   =   0.06;
             sen.fov         =   240 * pi/180;
-            sen.noise       =   [0.01; (240/684)*pi/180];   % 1 cm, 0.351 deg
-            sen.angular_res =   (240/684) * pi/180;         % 0.351 degree
+            sen.noise       =   [0.01; 0.01];   % 1%, 1%
+            sen.angular_res =   (240.0/684.0) * pi/180.0;         % 0.351 degree
         end
         
         % Find all measurements that are out of the sensor's range and set

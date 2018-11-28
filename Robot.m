@@ -53,7 +53,7 @@ classdef Robot < handle
             rob.length      =   0.455;
             rob.R           =   [0, 0, 0]';
             rob.r           =   rob.R;
-            rob.q           =   [0.01; 1 * pi/180];      % 1cm, 1 deg
+            rob.q           =   [0.01; 0.01];       % 1%, 1%
             rob.u           =   [0.1; 0.02];
             rob.maxspeed    =   1.4;                % 1.4m/s ~ 5km/h
             rob.min_turn_rad=   0.1;
